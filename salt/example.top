@@ -1,4 +1,9 @@
 base:
     '*':
         - elife
+        - elife.php7
+        - elife.mysql-client
+        - elife.mysql-server
+        - elife.nginx
+        - elife.nginx-php7
         - statusbase

@@ -1,0 +1,12 @@
+{% set app = pillar.statusbase %}
+parameters:
+    database_host: {{ app.db.host }}
+    database_port: {{ app.db.port }}
+    database_name: {{ app.db.name }}
+    database_user: {{ app.db.user }}
+    database_password: {{ app.db.pass }}
+    mailer_transport: null
+    mailer_host: null
+    mailer_user: null
+    mailer_password: null
+    secret: {{ app.secret }}
