@@ -3,11 +3,11 @@
 install-statusbase: 
     file.directory:
         - name: /srv/statusbase
-        - user: www-data
-        - group: www-data
+        - user: {{ pillar.elife.webserver.username }}
+        - group: {{ pillar.elife.webserver.username }}
 
     git.latest:
-        - user: www-data
+        - user: {{ pillar.elife.webserver.username }}
         - name: https://github.com/ep320/statusbase
         - rev: {{ salt['elife.cfg']('project.revision', 'project.branch', 'master') }}
         - branch: {{ salt['elife.branch']() }}
@@ -46,18 +46,16 @@ statusbase-db-access:
             - mysql_user: statusbase-db-user
 
           
-# owner should be elife, group owner should be www-data
-# www-data should have write permissions to whatever symfony needs
 file-perms:
     cmd.run:
         - cwd: /srv/statusbase
-        - name: chown www-data:www-data -R . && chmod +w -R var/
+        - name: chmod +w -R var/
         - require:
             - git: install-statusbase
             
 configure-statusbase:
     file.managed:
-        - user: www-data
+        - user: {{ pillar.elife.webserver.username }}
         - name: /srv/statusbase/app/config/parameters.yml
         - source: salt://statusbase/config/srv-statusbase-app-config-parameters.yml
         - template: jinja
@@ -65,7 +63,7 @@ configure-statusbase:
             - git: install-statusbase
 
     cmd.run:
-        - user: www-data
+        - user: {{ pillar.elife.webserver.username }}
         - cwd: /srv/statusbase
         - name: |
             # re-generate any files and install the db
@@ -77,7 +75,7 @@ configure-statusbase:
             - cmd: file-perms
 
 
-website-vhost:
+statusbase-vhost:
     file.managed:
         - name: /etc/nginx/sites-enabled/statusbase.conf
         - source: salt://statusbase/config/etc-nginx-sites-enabled-statusbase.conf
