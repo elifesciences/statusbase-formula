@@ -68,8 +68,7 @@ configure-statusbase:
         - name: |
             # re-generate any files and install the db
             set -e
-            composer install 
-            php bin/console doctrine:schema:update  --force
+            ./install-prod.sh
         - require:
             - file: configure-statusbase
             - cmd: file-perms
