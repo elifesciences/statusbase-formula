@@ -45,6 +45,13 @@ statusbase-db-access:
         - require:
             - mysql_user: statusbase-db-user
 
+# contains IP addresses so we can debug things under actual conditions
+replacement-app-dev:
+    file.managed:
+        - name: /srv/statusbase/web/app_dev.php
+        - source: salt://statusbase/config/srv-statusbase-web-app_dev.php
+        - require:
+            - git: install-statusbase
           
 file-perms:
     cmd.run:
@@ -69,10 +76,11 @@ configure-statusbase:
             # re-generate any files and install the db
             set -e
             composer install 
-            php bin/console doctrine:schema:update  --force
+            php bin/console doctrine:schema:update --force
         - require:
             - file: configure-statusbase
             - cmd: file-perms
+
 
 
 statusbase-vhost:
