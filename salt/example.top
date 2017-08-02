@@ -2,6 +2,7 @@ base:
     '*':
         - elife
         - elife.php7
+        - elife.composer
         - elife.mysql-client
         - elife.mysql-server
         - elife.nginx
